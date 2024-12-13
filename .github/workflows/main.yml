@@ -40,5 +40,5 @@ jobs:
 
       - name: Deploy to gh-pages
         run: |
-          git remote set-url origin https://Gowtham563:${{ secrets.GH_TOKEN }}@github.com/Gowtham563/Loginpage1.html
+          git remote set-url origin https://Gowtham563:${{ secrets.GH_TOKEN }}@github.com/Gowtham563/LoginPage/Loginpage1.html
           git push origin gh-pages
