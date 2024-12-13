@@ -3,24 +3,27 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - master  # Trigger deployment on push to the master branch
 
 permissions:
-  contents: write  # This gives the bot permission to push to the repository
+  contents: write  # Grant the bot permission to push changes to the repository
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
 
     steps:
+      # Checkout the repository code
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      # Set up Git for the deployment
       - name: Set up Git
         run: |
-          git config --global user.name "Gowtham563"
-          git config --global user.email "gowthamnataraj.softsuave@gmail.com"
+          git config --global user.name "Your Name"
+          git config --global user.email "your-email@example.com"
 
+      # Create gh-pages branch if it doesn't exist
       - name: Create gh-pages branch if it doesn't exist
         run: |
           git fetch --all
@@ -34,17 +37,15 @@ jobs:
             git commit --allow-empty -m "Initial commit to gh-pages"
           fi
 
-      - name: Pull latest changes from gh-pages
-        run: |
-          git fetch origin
-          git checkout gh-pages
-          git pull origin gh-pages --rebase
-
+      # Build and deploy (no build needed for static files, just copy)
       - name: Build and deploy
         run: |
-          # Your build/deploy steps here
-
+          # For static files, this step may be empty, just pushing the files to gh-pages
+          git add .
+          git commit -m "Deploy to gh-pages"
+          
+      # Push to the gh-pages branch
       - name: Deploy to gh-pages
         run: |
           git remote set-url origin https://Gowtham563:${{ secrets.GH_TOKEN }}@github.com/Gowtham563/LoginPage.git
-          git push origin gh-pages
+          git push origin gh-pages --force
