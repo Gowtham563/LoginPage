@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  contents: write  # This gives the bot permission to push to the repository
+  contents: write 
 
 jobs:
   deploy:
@@ -18,13 +18,13 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config --global user.name "Your Name"
-          git config --global user.email "your-email@example.com"
+          git config --global user.name "Gowtham563"
+          git config --global user.email "gowthamnataraj.softsuave@gmail.com"
 
       - name: Create gh-pages branch if it doesn't exist
         run: |
           git fetch --all
-          git branch -a  # List all branches
+          git branch -a  
           if git show-ref --quiet refs/heads/gh-pages; then
             echo "gh-pages branch exists."
           else
@@ -40,5 +40,5 @@ jobs:
 
       - name: Deploy to gh-pages
         run: |
-          git remote set-url origin https://<YOUR_USERNAME>:${{ secrets.GH_TOKEN }}@github.com/Gowtham563/LoginPage.git
+          git remote set-url origin https://Gowtham563:${{ secrets.GH_TOKEN }}@github.com/Gowtham563/LoginPage.git
           git push origin gh-pages
