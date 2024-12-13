@@ -1,20 +1,29 @@
-name: Deploy to GitHub Pages
+name: Deploy Landing Pages on Commit to Master
 
+# Trigger the workflow when a commit is pushed to the master branch
 on:
   push:
     branches:
-      - main  # Trigger workflow on push to main branch
+      - master  # Adjust if using a different default branch
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # GitHub's provided Ubuntu runner
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    # Step 1: Check out the repository
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./ 
+    # Step 2: Upload the HTML files to your server (example with scp)
+    - name: Deploy HTML files to server
+      run: |
+        # Example of deploying HTML files to a remote server via SCP (SSH)
+        scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} \
+          "Landing Page1.html" "Landing Page2.html" "Login Credentials.html" \
+          ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}:/path/to/your/web/directory
+
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
