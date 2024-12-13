@@ -1,28 +1,50 @@
-name: Deploy Landing Pages on Commit to Master
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - master 
+      - master  # This workflow will be triggered on push to the master branch
+
+permissions:
+  contents: write  # Permissions to push changes to the repository
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
 
     steps:
-  
-    - name: Checkout code
-      uses: actions/checkout@v2
+      # Checkout the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
+      # Set up Git with your details
+      - name: Set up Git
+        run: |
+          git config --global user.name "Gowtham563"
+          git config --global user.email "gowthamnataraj.softsuave@gmail.com"
 
-    - name: Deploy HTML files to server
-      run: |
-     
-        scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} \
-          "Landing Page1.html" "Landing Page2.html" "Login Credentials.html" \
-          ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}:/path/to/your/web/directory
+      # Create gh-pages branch if it doesn't exist
+      - name: Create gh-pages branch if it doesn't exist
+        run: |
+          git fetch --all
+          git branch -a  
+          if git show-ref --quiet refs/heads/gh-pages; then
+            echo "gh-pages branch exists."
+          else
+            git checkout --orphan gh-pages
+            git rm -rf .
+            echo "Creating empty gh-pages branch."
+            git commit --allow-empty -m "Initial commit to gh-pages"
+          fi
 
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-        DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
+      # Add files and commit the changes
+      - name: Add files and commit
+        run: |
+          git add .
+          git commit -m "Deploy static site to gh-pages"
+
+      # Deploy to gh-pages branch
+      - name: Deploy to gh-pages
+        run: |
+          git remote set-url origin https://Gowtham563:${{ secrets.GH_TOKEN }}@github.com/Gowtham563/LoginPage.git
+          git push origin gh-pages --force  # Force push to ensure we deploy correctly
