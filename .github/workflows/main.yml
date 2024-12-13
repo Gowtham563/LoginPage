@@ -34,6 +34,12 @@ jobs:
             git commit --allow-empty -m "Initial commit to gh-pages"
           fi
 
+      - name: Pull latest changes from gh-pages
+        run: |
+          git fetch origin
+          git checkout gh-pages
+          git pull origin gh-pages --rebase
+
       - name: Build and deploy
         run: |
           # Your build/deploy steps here
