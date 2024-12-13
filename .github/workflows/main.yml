@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  contents: write 
+  contents: write  # This gives the bot permission to push to the repository
 
 jobs:
   deploy:
@@ -40,5 +40,5 @@ jobs:
 
       - name: Deploy to gh-pages
         run: |
-          git remote set-url origin https://Gowtham563:${{ secrets.GH_TOKEN }}@github.com/Gowtham563/LoginPage/Loginpage1.html
+          git remote set-url origin https://Gowtham563:${{ secrets.GH_TOKEN }}@github.com/Gowtham563/LoginPage.git
           git push origin gh-pages
