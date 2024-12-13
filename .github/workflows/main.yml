@@ -1,12 +1,12 @@
-name: Deploy
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - master  # Trigger deployment on push to the master branch
+      - master  # This workflow will be triggered on push to the master branch
 
 permissions:
-  contents: write  # Grant the bot permission to push changes to the repository
+  contents: write  # Permissions to push changes to the repository
 
 jobs:
   deploy:
@@ -17,11 +17,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Set up Git for the deployment
+      # Set up Git with your details
       - name: Set up Git
         run: |
-          git config --global user.name "Your Name"
-          git config --global user.email "your-email@example.com"
+          git config --global user.name "Gowtham563"
+          git config --global user.email "gowthamnataraj.softsuave@gmail.com"
 
       # Create gh-pages branch if it doesn't exist
       - name: Create gh-pages branch if it doesn't exist
@@ -37,15 +37,14 @@ jobs:
             git commit --allow-empty -m "Initial commit to gh-pages"
           fi
 
-      # Build and deploy (no build needed for static files, just copy)
-      - name: Build and deploy
+      # Add files and commit the changes
+      - name: Add files and commit
         run: |
-          # For static files, this step may be empty, just pushing the files to gh-pages
           git add .
-          git commit -m "Deploy to gh-pages"
-          
-      # Push to the gh-pages branch
+          git commit -m "Deploy static site to gh-pages"
+
+      # Deploy to gh-pages branch
       - name: Deploy to gh-pages
         run: |
           git remote set-url origin https://Gowtham563:${{ secrets.GH_TOKEN }}@github.com/Gowtham563/LoginPage.git
-          git push origin gh-pages --force
+          git push origin gh-pages --force  # Force push to ensure we deploy correctly
